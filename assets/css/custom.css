@@ -1,0 +1,21 @@
+/* default element */
+body{background-image: url('../imgs/bg.png');}
+table thead tr th{text-align: center;}
+a{color: inherit;}
+hr{width: 100%;}
+.navbar{margin-bottom: 0px;border-radius: 0px;}
+.btn{border-radius: 0px;}
+.form-control{border-radius: 0px;}
+.alert{margin-bottom: 0px;margin-top: 0px;border-radius: 0px;}
+.container{padding-bottom: 20px;box-shadow: 0px 0px 2px 2px #dfdfdf; background-color: #fff;}
+.nav{padding-left: 5px;}
+#userForm{margin-top: 20px;}
+.wrapper{margin-top: 30px}
+.wrapper .search-area{border-right: solid 1px #dfdfdf;}
+.search-title{background-color: #dfdfdf;text-transform: uppercase;border: solid 1px grey;}
+.search-toggle{bottom: 45px; border: solid 1px grey;}
+.search-toggle .icon-bar{background-color: grey;}
+.navbar-collapse{padding-right: 0px;padding-left: 0px;}
+#search-form{width: 100%;}
+#search-form .btn-group {display: flex !important;}
+#search-form .btn-group button {width: calc(100%/2);}
