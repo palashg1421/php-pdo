@@ -1,164 +1,45 @@
-<?php require_once 'header.php'; ?>
-
-<script>
-    /**
-     * jQuery ready event
-     */
-    $().ready(function (){
-        /**
-         * Load user listing on page load
-         */
-        getUserList();
-    });
-
-    /**
-     * Get user listing
-     */
-    function getUserList(){
-        var url = '<?php echo Util::get_ajax_url(); ?>';
-        var data = {
-            action: 'get_user_list',
-            form: $('#search-form').serializeArray()
-        };
-        $.ajax({
-            url: url,
-            data: data,
-            type: 'post',
-            cache: false,
-            beforeSend: function () {
-                $('.user-content').html(spin2x);
-            },
-            success: function (data) {
-                $('.user-content').html(data);
-            }
-        });
-    }
-    
-    /**
-     * Load updated user listing on submiting search form
-     */
-    $(document).on('submit', '#search-form', function(e){
-        e.preventDefault();
-        getUserList();
-    });
-    
-    /**
-     * Load default result on reset search form
-     */
-    $(document).on('click', '.reset-search', function(e){
-        $('#search-form').trigger("reset");
-    });
-    
-    $(document).on('click', '.delete-user-btn', function(e){
-        var uid = $(this).data('uid');
-        bootbox.confirm( 'Are you sure?', function(result){
-            if(result){
-                var url = '<?php echo Util::get_ajax_url(); ?>';
-                var data = {
-                    action: 'delete_user',
-                    uid: uid
-                };
-                $.ajax({
-                    url: url,
-                    data: data,
-                    type: 'POST',
-                    cache: false,
-                    beforeSend: function () {
-                    },
-                    success: function (response) {
-                        if(response === '1')
-                            getUserList();
-                    }
-                });
-            }
-       });
-    });
-    
-    $(document).on('click', '.openUserModel', function(e){
-        var url = '<?php echo Util::get_ajax_url(); ?>';
-        var data = {
-            action: 'get_user_popup',
-            uid: $(this).data('uid')
-        };
-        $.ajax({
-            url: url,
-            data: data,
-            type: 'POST',
-            cache: false,
-            beforeSend: function () {
-            },
-            success: function (response) {
-                $('#userModal .modal-body').html(response);
-            }
-        });
-    });
-    
-    $(document).on('submit', '#userForm', function(e){
-        e.preventDefault();
-        var url = '<?php echo Util::get_ajax_url(); ?>';
-        var data = {
-            action: 'process_user',
-            form: $('#userForm').serializeArray()
-        };
-        $.ajax({
-            url: url,
-            data: data,
-            type: 'POST',
-            beforeSend: function () {
-            },
-            success: function (response) {
-                $('#userModal').modal('toggle');
-                if(response === '1')
-                    getUserList();
-            }
-        });
-    });
-    
-    $(document).on('change', '#sorting', function(e){
-        jQuery('#sortBy').val(jQuery(this).val());
-        getUserList();
-    });
-
-    $(document).on('change', '#layouting', function(e){
-        jQuery('#layout').val(jQuery(this).val());
-        getUserList();
-    });
-    
-    $(document).on('click', '.pagination li a', function(e){
-        $('#offset').val($(this).data('offset'));
-        getUserList();
-    });
-</script>
-
-<div class="row">
-    <div class="wrapper">
-        <div class="col-sm-2 search-area">
-            <?php include 'search.php'; ?>
-        </div>
-        <div class="col-sm-10">
-            <div class="top-filters">
-                <form class="form-inline" action="/action_page.php">
-                    <div class="form-group">
-                        <select name="sorting" id="sorting" class="form-control">
-                            <option value="latest">Latest</option>
-                            <option value="earliest">Earliest</option>
-                        </select>
-                    </div>
-                    <!-- <div class="form-group">
-                        <select name="layouting" id="layouting" class="form-control">
-                            <option value="list">List</option>
-                            <option value="grid">Grid</option>
-                        </select>
-                    </div> -->
-                </form>
-            </div>
-            <hr/>
-
-            <div class="content-wrapper">
-                <div class="user-content"></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<?php require_once 'footer.php';
+<?php require_once './include/Functions.php'; ?>
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>PDO</title>
+		<link rel="stylesheet" href="./assets/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="./assets/css/font-awesome.min.css" />
+		<link rel="stylesheet" href="./assets/css/custom.css" />
+		<link rel="stylesheet" href="./assets/css/responsive.css" />
+		<script src="./assets/js/jquery.min.js"></script>
+		<script src="./assets/js/bootstrap.min.js"></script>
+		<script src="./assets/js/bootbox.js"></script>
+		<script src="./assets/js/custom.js"></script>
+	</head>
+	<body>
+		<div class="container-fluid">
+			<div class="row nav-wrapper"><?php require_once './pages/layout/nav.php'; ?></div>
+			<div class="row body-wrapper">
+				<div class="col col-sm-3">
+						<?php include './pages/layout/search.php'; ?>
+				</div>
+				<div class="col col-sm-9">
+					<div class="content-bg">
+						<?php include('./pages/home.php'); ?>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- User modal-->
+		<div id="userModal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">User</h4>
+					</div>
+					<div class="modal-body"></div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
